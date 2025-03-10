@@ -10,12 +10,12 @@ RUN apk add --no-cache \
     # TeX Live 相关包
     texmf-dist-langchinese \
     && \
-    # 下载并安装文泉驿字体
-    wget -qO wqy.tar.gz https://sourceforge.net/projects/wqy/files/wqy-zenhei/0.9.45%20%28Fighting-state%20RC1%29/wqy-zenhei-0.9.45.tar.gz && \
-    tar xf wqy.tar.gz && \
-    mkdir -p /usr/share/fonts/wenquanyi && \
-    cp wqy-zenhei/wqy-zenhei.ttc /usr/share/fonts/wenquanyi/ && \
-    rm -rf wqy-zenhei* && \
+    # 下载并安装思源黑体
+    wget -qO SourceHanSans.zip https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSansCN.zip && \
+    unzip SourceHanSans.zip -d /tmp/SourceHanSans && \
+    mkdir -p /usr/share/fonts/adobe && \
+    cp /tmp/SourceHanSans/SubsetOTF/CN/*.otf /usr/share/fonts/adobe/ && \
+    rm -rf /tmp/SourceHanSans SourceHanSans.zip && \
     # 更新字体缓存
     fc-cache -f -v
 
@@ -26,4 +26,4 @@ COPY templates/default.latex /root/.pandoc/templates/
 RUN rm -rf /var/cache/apk/* 
 
 #调用示例：
-#docker run --rm --volume "${PWD}:/data" baibaomen/pandoc-extra-cn:latest test-chinese.md -o test-chinese.pdf --pdf-engine=xelatex -V CJKmainfont="WenQuanYi Zen Hei"
+#docker run --rm --volume "${PWD}:/data" baibaomen/pandoc-extra-cn:latest test-chinese.md -o test-chinese.pdf --pdf-engine=xelatex -V CJKmainfont="Source Han Sans CN"

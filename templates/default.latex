@@ -11,9 +11,9 @@
 
 % 设置中文支持
 \usepackage{xeCJK}
-\setCJKmainfont{WenQuanYi Zen Hei}
-\setCJKsansfont{WenQuanYi Zen Hei}
-\setCJKmonofont{WenQuanYi Zen Hei}
+\setCJKmainfont{Source Han Sans CN}
+\setCJKsansfont{Source Han Sans CN}
+\setCJKmonofont{Source Han Sans CN}
 
 $if(fontfamily)$
 \usepackage{$fontfamily$}
