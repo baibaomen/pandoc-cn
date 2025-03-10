@@ -19,8 +19,5 @@ RUN apk add --no-cache \
     # 更新字体缓存
     fc-cache -f -v
 
-# 设置默认 LaTeX 模板中文支持
-COPY default.latex /root/.pandoc/templates/
-
 # 清理缓存
 RUN rm -rf /var/cache/apk/* 
