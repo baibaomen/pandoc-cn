@@ -1,6 +1,6 @@
 # Pandoc-Extra-CN
 
-基于 pandoc/extra 镜像，增加了中文支持的 Pandoc 环境。
+本项目基于 [Pandoc](https://github.com/jgm/pandoc)（一个通用文档转换工具）的 pandoc/extra 镜像，增加了中文支持的 Pandoc 环境。Pandoc 是由 John MacFarlane 开发的开源文档转换工具，能够在多种标记格式之间进行转换。
 
 ## 快速开始
 
