@@ -20,10 +20,7 @@ RUN apk add --no-cache \
     fc-cache -f -v
 
 # 设置默认 LaTeX 模板中文支持
-COPY templates/default.latex /root/.pandoc/templates/
+COPY default.latex /root/.pandoc/templates/
 
 # 清理缓存
 RUN rm -rf /var/cache/apk/* 
-
-#调用示例：
-#docker run --rm --volume "${PWD}:/data" baibaomen/pandoc-extra-cn:latest test-chinese.md -o test-chinese.pdf --pdf-engine=xelatex -V CJKmainfont="Source Han Sans CN"
