@@ -16,7 +16,6 @@ RUN apk add --no-cache \
     mkdir -p /usr/share/fonts/wenquanyi && \
     cp wqy-zenhei/wqy-zenhei.ttc /usr/share/fonts/wenquanyi/ && \
     rm -rf wqy-zenhei* && \
-
     # 更新字体缓存
     fc-cache -f -v
 
