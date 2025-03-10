@@ -31,4 +31,6 @@ docker run --rm --volume "${PWD}:/data" baibaomen/pandoc-extra-cn:latest test-ch
 
 ## 许可证
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。 
+本项目的 Dockerfile 和相关配置文件采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+
+注意：本项目中包含的 Pandoc 软件使用 GPL-2.0-or-later 许可证。使用本 Docker 镜像时，请同时遵守 Pandoc 的 GPL 许可证要求。 
