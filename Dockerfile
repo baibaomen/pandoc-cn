@@ -19,5 +19,29 @@ RUN apk add --no-cache \
     # 更新字体缓存
     fc-cache -f -v
 
+# 安装Node.js和npm
+RUN apk add --no-cache nodejs npm
+
+# 创建应用目录
+WORKDIR /app
+
+# 复制应用文件
+COPY server.js package.json /app/
+
+# 安装依赖
+RUN npm install
+
+# 创建数据目录
+RUN mkdir -p /data
+
 # 清理缓存
-RUN rm -rf /var/cache/apk/* 
+RUN rm -rf /var/cache/apk/*
+
+# 暴露端口
+EXPOSE 3000
+
+# 覆盖基础镜像的ENTRYPOINT
+ENTRYPOINT []
+
+# 设置启动命令
+CMD ["node", "/app/server.js"] 

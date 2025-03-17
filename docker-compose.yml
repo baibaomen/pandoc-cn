@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  pandoc-md-to-pdf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+    container_name: pandoc-md-to-pdf-service 

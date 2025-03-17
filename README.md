@@ -1,36 +1,114 @@
-# Pandoc-Extra-CN
+# Pandoc Markdown转PDF HTTP服务
 
-本项目基于 [Pandoc](https://github.com/jgm/pandoc)（一个通用文档转换工具）的 pandoc/extra 镜像，增加了中文支持的 Pandoc 环境。Pandoc 是由 John MacFarlane 开发的开源文档转换工具，能够在多种标记格式之间进行转换。
+这是一个基于Docker的HTTP服务，用于将Markdown文档转换为PDF文件。服务支持中文，并使用思源黑体（Source Han Sans CN）作为默认中文字体。
 
-## 快速开始
+## 功能特点
 
-### 镜像地址
+- 提供HTTP API接口，接收Markdown内容并转换为PDF
+- 支持两种转换方式：直接提交Markdown文本或上传Markdown文件
+- 生成唯一的文件ID，便于后续下载
+- 提供文件下载链接
+- 支持中文内容
+
+## 使用方法
+
+### 构建Docker镜像
 
 ```bash
-baibaomen/pandoc-extra-cn:latest
+docker build -t pandoc-md-to-pdf-service .
 ```
 
-### 使用方法
+### 运行Docker容器
 
-Windows:
 ```bash
-docker run --rm --volume "%CD%:/data" baibaomen/pandoc-extra-cn:latest test-chinese.md -o test-chinese.pdf --pdf-engine=xelatex -V CJKmainfont="Source Han Sans CN"
+docker run -d -p 3000:3000 -v /path/to/local/data:/data pandoc-md-to-pdf-service
 ```
 
-Linux/macOS:
+注意：请将 `/path/to/local/data` 替换为您想要存储PDF文件的本地目录路径。
+
+### API接口
+
+#### 1. 健康检查
+
+```
+GET /health
+```
+
+返回服务状态。
+
+#### 2. 通过文本内容转换
+
+```
+POST /convert/text
+Content-Type: application/json
+
+{
+  "markdown": "# 标题\n\n这是一段中文内容。"
+}
+```
+
+#### 3. 通过文件上传转换
+
+```
+POST /convert/file
+Content-Type: multipart/form-data
+
+Form参数:
+- markdown: [Markdown文件]
+```
+
+#### 4. 下载生成的PDF
+
+```
+GET /download/{fileId}.pdf
+```
+
+其中 `{fileId}` 是API返回的文件ID。
+
+### 响应示例
+
+成功响应：
+
+```json
+{
+  "success": true,
+  "fileId": "550e8400-e29b-41d4-a716-446655440000",
+  "downloadUrl": "/download/550e8400-e29b-41d4-a716-446655440000.pdf"
+}
+```
+
+错误响应：
+
+```json
+{
+  "error": "错误信息",
+  "details": "详细错误信息"
+}
+```
+
+## 示例使用
+
+### 使用curl发送Markdown文本
+
 ```bash
-docker run --rm --volume "${PWD}:/data" baibaomen/pandoc-extra-cn:latest test-chinese.md -o test-chinese.pdf --pdf-engine=xelatex -V CJKmainfont="Source Han Sans CN"
+curl -X POST http://localhost:3000/convert/text \
+  -H "Content-Type: application/json" \
+  -d '{"markdown": "# 测试标题\n\n这是一段中文内容。"}'
 ```
 
-## 支持的功能
+### 使用curl上传Markdown文件
 
-- 支持中文
-- 预装思源黑体（Source Han Sans CN）
-- 支持 XeLaTeX 引擎
-- 支持其他 pandoc-extra 原有功能
+```bash
+curl -X POST http://localhost:3000/convert/file \
+  -F "markdown=@/path/to/your/document.md"
+```
 
-## 许可证
+### 下载生成的PDF
 
-本项目的 Dockerfile 和相关配置文件采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+使用浏览器访问：`http://localhost:3000/download/{fileId}.pdf`
 
-注意：本项目中包含的 Pandoc 软件使用 GPL-2.0 许可证。使用本 Docker 镜像时，请同时遵守 Pandoc 的 GPL 许可证要求。 
+或使用curl下载：
+
+```bash
+curl -o output.pdf http://localhost:3000/download/{fileId}.pdf
+``` 
